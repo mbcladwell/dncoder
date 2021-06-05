@@ -2,44 +2,70 @@
 -e main -s
 !#
 
-(add-to-load-path "/home/mbc/temp")
+(add-to-load-path "/home/mbc/projects/dncoder")
 
 (use-modules (srfi srfi-19)
 	     (srfi srfi-1)
 	     (srfi srfi-9)
+	     (srfi srfi-43)  ;;vector library
 	     (ice-9 pretty-print)
 	     (json)
+	     (rnrs bytevectors)
+             (ice-9 binary-ports)
+             (ice-9 format)
+             (ice-9 getopt-long)
+	     (ice-9 iconv)   ;;string->byte->string
 	     )
 
+(load "./meths-and-vars.scm")
 
-(define-record-type <person>
-  (make-person first last maiden)
-  person?
-  (first    person-first)
-  (last person-last)
-  (maiden   person-maiden ))
-
-
-
-(define-json-type <person> (first)(last)(maiden))
-
-(define results  (make-person "Julie" "Smith" "Jones"))
+(define-record-type <oligo>
+  (make-oligo id  seed seq)
+  oligo?
+  (id    oligo-id)
+  (seed   oligo-seed )
+  (seq oligo-seq))
 
 
-(define-record-type <contact>
-  (make-contact first index qname wholen firstn lastn affil email)
-  contact?
-  (first    contact-first set-contact-first!)
-  (index contact-index set-contact-index!)
-  (qname contact-qname set-contact-qname!)
-  (wholen contact-wholen)
-  (firstn contact-firstn)
-  (lastn contact-lastn)
-  (affil contact-affil set-contact-affil!)
-  (email contact-email set-contact-email!))
+(define-json-type <oligo> (id)(seed)(seq))
 
+(define results  (make-oligo "1"  "gcttcga" "actgatagcagtagactgcagat"))
+
+
+(define-record-type <project>
+  (make-project name owner email algorithm oligos)
+  project?
+  (name    project-name set-project-name!)
+  (owner project-owner set-project-owner!)
+  (email project-email set-project-email!)
+  (algorithm project-algorithm set-project-algorithm!)
+  (oligos project-oligos set-project-oligos!)
+  )
+
+
+(define my-input   (bytevector->u8-list (get-bytevector-some (open-input-file "/home/mbc/projects/dncoder/dncoder/courville.ods") )))
+
+(define my-output (map process-byte  my-input))
+
+(define (cluster-bits lst size out)
+  (if (null? (cdddr lst))
+      (begin
+      (car lst)
+
+      )
+      (let* ((a (car lst))
+	     (b (cadr lst))
+	     (c (caddr lst))
+	     (d (string-append a b c))
+	     (e )
+	     )
+      (cluster-bits (cdr lst) size out))	
+
+  )
+
+(cdddr my-output)
 
 (define (main args)
 
-(pretty-print (person->json results))
+(pretty-print (oligo->json results))
   )
