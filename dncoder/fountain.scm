@@ -2,8 +2,7 @@
 	     (srfi srfi-43)
              (ice-9 format)
 	     (ice-9 iconv))
-	     
-	 
+	    	 
 
 ;; m homopolymer length  3
 ;; b coding potential; entropy of each nucleotide in a valid sequence 1.98
@@ -47,7 +46,7 @@
 (append! rt '(0.13))
 
 
-rho-tau
+
 (length rho)
 (+(list-ref rho 3)(list-ref tau 3))
 (plot* #f 0 15 0 10 #f  #f #f #f #f "My Title" d #f )

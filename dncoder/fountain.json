@@ -1,0 +1,10 @@
+{
+    "project" : "myprj",
+    "owner" : "bob",
+    "email" : "bob@acme.com",
+    "oligo_size" : "24",
+    "file" : "/home/mbc/projects/dncoder/dncoder/courville.ods"
+    "algorithm" : "fountain"
+    "out-file" : "out"
+    
+}
